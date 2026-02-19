@@ -1,0 +1,17 @@
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\dto\CourseStatistics.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\exception\ResourceNotFoundException.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\FormationServiceApplication.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\repository\CourseRepository.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\dto\CourseDTO.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\entity\Course.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\repository\CourseEnrollmentRepository.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\service\CourseService.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\exception\BadRequestException.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\controller\CourseController.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\dto\StudentReport.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\exception\GlobalExceptionHandler.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\entity\CourseEnrollment.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\service\EnrollmentService.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\controller\EnrollmentController.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\dto\CourseSearchCriteria.java
+C:\Users\Rahali\Desktop\pi\formation-service\src\main\java\com\elearning\formation\dto\EnrollmentDTO.java
