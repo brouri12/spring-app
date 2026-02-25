@@ -42,4 +42,12 @@ public class FeedbackService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public List<Feedback> getByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    public List<Feedback> getByModuleId(Long moduleId) {
+        return repository.findByModuleId(moduleId);
+    }
 }

@@ -17,7 +17,11 @@ public class ReclamationController {
     }
 
     @GetMapping
-    public List<Reclamation> getAll() {
+    public List<Reclamation> getAll(
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String status) {
+        if (userId != null) return service.getByUserId(userId);
+        if (status != null) return service.getByStatus(status);
         return service.getAll();
     }
 

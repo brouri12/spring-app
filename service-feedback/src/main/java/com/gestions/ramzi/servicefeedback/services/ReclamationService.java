@@ -2,7 +2,9 @@ package com.gestions.ramzi.servicefeedback.services;
 
 import com.gestions.ramzi.servicefeedback.entities.Reclamation;
 import com.gestions.ramzi.servicefeedback.repositories.ReclamationRepository;
+import com.gestions.ramzi.servicefeedback.repositories.ResolutionActionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,9 +13,12 @@ import java.util.List;
 public class ReclamationService {
 
     private final ReclamationRepository repository;
+    private final ResolutionActionRepository resolutionActionRepository;
 
-    public ReclamationService(ReclamationRepository repository) {
+    public ReclamationService(ReclamationRepository repository,
+                              ResolutionActionRepository resolutionActionRepository) {
         this.repository = repository;
+        this.resolutionActionRepository = resolutionActionRepository;
     }
 
     public List<Reclamation> getAll() {
@@ -39,7 +44,17 @@ public class ReclamationService {
         return null;
     }
 
+    @Transactional
     public void delete(Long id) {
+        resolutionActionRepository.findByReclamation_Id(id).forEach(resolutionActionRepository::delete);
         repository.deleteById(id);
+    }
+
+    public List<Reclamation> getByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    public List<Reclamation> getByStatus(String status) {
+        return repository.findByStatus(status);
     }
 }

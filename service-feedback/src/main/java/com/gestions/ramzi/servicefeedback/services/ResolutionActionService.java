@@ -1,7 +1,9 @@
 package com.gestions.ramzi.servicefeedback.services;
 
 import com.gestions.ramzi.servicefeedback.entities.ResolutionAction;
+import com.gestions.ramzi.servicefeedback.entities.Reclamation;
 import com.gestions.ramzi.servicefeedback.repositories.ResolutionActionRepository;
+import com.gestions.ramzi.servicefeedback.repositories.ReclamationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,9 +13,11 @@ import java.util.List;
 public class ResolutionActionService {
 
     private final ResolutionActionRepository repository;
+    private final ReclamationRepository reclamationRepository;
 
-    public ResolutionActionService(ResolutionActionRepository repository) {
+    public ResolutionActionService(ResolutionActionRepository repository, ReclamationRepository reclamationRepository) {
         this.repository = repository;
+        this.reclamationRepository = reclamationRepository;
     }
 
     public List<ResolutionAction> getAll() {
@@ -25,6 +29,11 @@ public class ResolutionActionService {
     }
 
     public ResolutionAction create(ResolutionAction action) {
+        if (action.getReclamationId() != null) {
+            Reclamation reclamation = reclamationRepository.findById(action.getReclamationId())
+                    .orElseThrow(() -> new IllegalArgumentException("Reclamation not found: " + action.getReclamationId()));
+            action.setReclamation(reclamation);
+        }
         action.setDateAction(LocalDateTime.now());
         return repository.save(action);
     }
@@ -44,8 +53,6 @@ public class ResolutionActionService {
     }
 
     public List<ResolutionAction> getByReclamationId(Long reclamationId) {
-        return repository.findAll().stream()
-                .filter(a -> a.getReclamationId().equals(reclamationId))
-                .toList();
+        return repository.findByReclamation_Id(reclamationId);
     }
 }
