@@ -32,7 +32,7 @@ public class Feedback {
 
     @Min(1)
     @Max(5)
-    private int note;
+    private Integer note;
 
     private String commentaire;
 

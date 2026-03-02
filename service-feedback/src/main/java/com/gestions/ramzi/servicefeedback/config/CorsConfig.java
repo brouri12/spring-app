@@ -41,8 +41,8 @@ public class CorsConfig {
         // Allow credentials
         config.setAllowCredentials(true);
         
-        // Expose headers that frontend might need
-        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        // Expose headers that frontend might need for file downloads
+        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "Content-Disposition", "Accept-Ranges"));
         
         // Max age for preflight requests
         config.setMaxAge(3600L);

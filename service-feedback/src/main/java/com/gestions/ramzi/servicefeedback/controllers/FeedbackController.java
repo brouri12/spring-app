@@ -1,8 +1,10 @@
 package com.gestions.ramzi.servicefeedback.controllers;
 
 import com.gestions.ramzi.servicefeedback.dto.FeedbackResponse;
+import com.gestions.ramzi.servicefeedback.dto.FeedbackStats;
 import com.gestions.ramzi.servicefeedback.entities.Feedback;
 import com.gestions.ramzi.servicefeedback.services.FeedbackService;
+import com.gestions.ramzi.servicefeedback.services.NotificationService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class FeedbackController {
 
     private final FeedbackService service;
+    private final NotificationService notificationService;
 
-    public FeedbackController(FeedbackService service) {
+    public FeedbackController(FeedbackService service, NotificationService notificationService) {
         this.service = service;
+        this.notificationService = notificationService;
     }
 
     private static List<FeedbackResponse> toResponseList(List<Feedback> list) {
@@ -32,6 +36,11 @@ public class FeedbackController {
         return toResponseList(list);
     }
 
+    @GetMapping("/stats")
+    public FeedbackStats getStats(@RequestParam(required = false) Long moduleId) {
+        return service.getStats(moduleId);
+    }
+
     @GetMapping("/{id}")
     public FeedbackResponse getById(@PathVariable Long id) {
         return FeedbackResponse.from(service.getById(id));
@@ -39,7 +48,11 @@ public class FeedbackController {
 
     @PostMapping
     public FeedbackResponse create(@Valid @RequestBody Feedback feedback) {
-        return FeedbackResponse.from(service.create(feedback));
+        Feedback saved = service.create(feedback);
+        // Envoyer notification
+        notificationService.notifierNouvelFeedback(saved);
+        notificationService.notifierFeedbackNegatif(saved);
+        return FeedbackResponse.from(saved);
     }
 
     @PutMapping("/{id}")
