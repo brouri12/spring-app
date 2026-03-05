@@ -34,9 +34,18 @@ public class CandidatureEnseignant {
     @Column(unique = true)
     private String email;
     
-    @NotBlank(message = "L'URL du CV est obligatoire")
-    @ValidCvUrl(message = "URL du CV invalide. Doit être une URL valide avec extension .pdf, .doc, .docx ou .txt")
-    private String cv_url;
+    @Lob
+    @Column(name = "cv_pdf", columnDefinition = "LONGBLOB")
+    private byte[] cv_pdf;
+    
+    @Column(name = "cv_filename")
+    private String cv_filename;
+    
+    @Column(name = "cv_content_type")
+    private String cv_content_type;
+    
+    @Column(name = "cv_url")
+    private String cv_url = "";
     
     @NotBlank(message = "La lettre de motivation est obligatoire")
     @ValidLettreMotivation(message = "Lettre de motivation invalide. Doit contenir 100-2000 caractères, au moins 20 mots, et des phrases complètes")

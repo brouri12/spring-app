@@ -81,10 +81,10 @@ public class LettreMotivationValidator implements ConstraintValidator<ValidLettr
             .distinct()
             .count();
         
-        if (words.length > 10 && (double) uniqueWords / words.length < 0.3) {
+        if (words.length > 10 && (double) uniqueWords / words.length < 0.2) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                "La lettre de motivation doit contenir plus de diversité dans le vocabulaire"
+                "La lettre de motivation doit contenir plus de diversité dans le vocabulaire (au moins 20% de mots uniques)"
             ).addConstraintViolation();
             return false;
         }

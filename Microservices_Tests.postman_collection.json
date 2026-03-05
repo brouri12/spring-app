@@ -1,0 +1,391 @@
+{
+  "info": {
+    "name": "Microservices ESPRIT - Forum & Recrutement",
+    "description": "Collection complète pour tester les microservices Forum et Recrutement",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Forum Service",
+      "item": [
+        {
+          "name": "GET All Forums",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum"]
+            }
+          }
+        },
+        {
+          "name": "GET Forum by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Forum",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Discussion Python\",\n  \"description\": \"Forum pour les questions Python\",\n  \"cree_par\": 3,\n  \"niveau\": \"L2\",\n  \"groupe\": \"INFO-C\",\n  \"cours\": \"Programmation Python\",\n  \"statut\": \"OUVERT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/forum",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Forum",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Discussion Java Spring Boot - Mise à jour\",\n  \"description\": \"Forum mis à jour\",\n  \"niveau\": \"L3\",\n  \"groupe\": \"INFO-A\",\n  \"cours\": \"Développement Web\",\n  \"statut\": \"OUVERT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/forum/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Forum",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "3"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Fermer Forum",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/1/fermer",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "1", "fermer"]
+            }
+          }
+        },
+        {
+          "name": "GET Messages by Forum",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/1/messages",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "1", "messages"]
+            }
+          }
+        },
+        {
+          "name": "POST Publier Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenu\": \"Nouveau message de test\",\n  \"auteur_id\": 103,\n  \"type_auteur\": \"ETUDIANT\",\n  \"statut\": \"ACTIF\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/forum/message?forumId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "message"],
+              "query": [
+                {
+                  "key": "forumId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Forums Plus Actifs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/plus-actifs",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "plus-actifs"]
+            }
+          }
+        },
+        {
+          "name": "GET Recherche Forums",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/forum/recherche?titre=Java&page=0&size=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "forum", "recherche"],
+              "query": [
+                {
+                  "key": "titre",
+                  "value": "Java"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recrutement Service",
+      "item": [
+        {
+          "name": "GET All Offres",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/offres",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "offres"]
+            }
+          }
+        },
+        {
+          "name": "GET Offre by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/offres/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "offres", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Offre",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Enseignant Cybersécurité\",\n  \"description\": \"Recherche enseignant spécialisé en cybersécurité\",\n  \"specialite\": \"Cybersécurité\",\n  \"experience_min\": 4,\n  \"statut\": \"OUVERTE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/offres",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "offres"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Offre",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Enseignant Java/Spring Boot - Senior\",\n  \"description\": \"Description mise à jour\",\n  \"specialite\": \"Développement Web\",\n  \"experience_min\": 5,\n  \"statut\": \"OUVERTE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/offres/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "offres", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Offre",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/offres/3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "offres", "3"]
+            }
+          }
+        },
+        {
+          "name": "GET All Candidatures",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/candidatures",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "candidatures"]
+            }
+          }
+        },
+        {
+          "name": "POST Postuler",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom_candidat\": \"Gharbi\",\n  \"prenom_candidat\": \"Ahmed\",\n  \"email\": \"ahmed.gharbi@example.com\",\n  \"cv_url\": \"https://example.com/cv/ahmed.pdf\",\n  \"lettre_motivation\": \"Je suis très motivé pour ce poste...\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/candidatures?offreId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "candidatures"],
+              "query": [
+                {
+                  "key": "offreId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH Accepter Candidature",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/candidatures/1/statut?statut=ACCEPTEE",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "candidatures", "1", "statut"],
+              "query": [
+                {
+                  "key": "statut",
+                  "value": "ACCEPTEE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH Refuser Candidature",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/candidatures/2/statut?statut=REFUSEE",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "candidatures", "2", "statut"],
+              "query": [
+                {
+                  "key": "statut",
+                  "value": "REFUSEE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Convertir en Enseignant",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/recrutement/candidatures/1/convertir",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "recrutement", "candidatures", "1", "convertir"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

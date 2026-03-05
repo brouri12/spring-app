@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
         Contact contact = new Contact();
         contact.setEmail("forum@esprit.tn");
-        contact.setName("Équipe Forum ESPRIT");
+        contact.setName("Équipe Forum JUNGLE IN ENGLISH");
         contact.setUrl("https://esprit.tn");
 
         License license = new License()
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 .title("Forum Service API")
                 .version("1.0.0")
                 .contact(contact)
-                .description("API REST pour la gestion du forum académique ESPRIT. " +
+                .description("API REST pour la gestion du forum académique JUNGLE IN ENGLISH. " +
                         "Cette API permet de gérer les forums de discussion, les messages, " +
                         "et offre des fonctionnalités de recherche et de statistiques.")
                 .termsOfService("https://esprit.tn/terms")

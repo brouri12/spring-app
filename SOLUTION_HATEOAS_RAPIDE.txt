@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════
+    SOLUTION RAPIDE - ERREUR HATEOAS
+═══════════════════════════════════════════════════════════
+
+❌ ERREUR :
+Type org.springframework.boot.autoconfigure.hateoas.HateoasProperties not present
+Error creating bean with name 'halProvider'
+
+✅ SOLUTION :
+Conflit entre Swagger et Spring Data REST
+
+
+═══════════════════════════════════════════════════════════
+    CORRECTION APPLIQUÉE
+═══════════════════════════════════════════════════════════
+
+J'ai ajouté cette ligne dans application.properties :
+
+spring.autoconfigure.exclude=org.springdoc.core.configuration.SpringDocDataRestConfiguration,org.springdoc.core.configuration.SpringDocHateoasConfiguration
+
+
+═══════════════════════════════════════════════════════════
+    REDÉMARRER LE SERVICE
+═══════════════════════════════════════════════════════════
+
+cd recrutement-service
+mvnw spring-boot:run
+
+
+═══════════════════════════════════════════════════════════
+    TESTER SWAGGER
+═══════════════════════════════════════════════════════════
+
+http://localhost:8083/swagger-ui/index.html
+
+
+═══════════════════════════════════════════════════════════
+    VÉRIFICATION
+═══════════════════════════════════════════════════════════
+
+✅ Service démarre sans erreur
+✅ API fonctionne : http://localhost:8083/api/recrutement/offres
+✅ Swagger accessible : http://localhost:8083/swagger-ui/index.html
+
+
+═══════════════════════════════════════════════════════════
+Pour plus de détails : CORRIGER_ERREUR_SWAGGER_HATEOAS.md
+═══════════════════════════════════════════════════════════

@@ -1,0 +1,71 @@
+═══════════════════════════════════════════════════════════
+  SOLUTION DÉFINITIVE - 3 COMMANDES SEULEMENT
+═══════════════════════════════════════════════════════════
+
+ÉTAPE 1: Exécutez ce script SQL
+────────────────────────────────────────────────────────────
+mysql -u root -p < FIX_MYSQL_NOW.sql
+
+(Entrez votre mot de passe MySQL quand demandé)
+
+Vous devriez voir: max_allowed_packet = 67108864
+
+
+ÉTAPE 2: Redémarrez votre backend
+────────────────────────────────────────────────────────────
+1. Allez dans la console où tourne le backend
+2. Appuyez sur Ctrl+C pour l'arrêter
+3. Exécutez: mvn spring-boot:run
+4. Attendez de voir: "Started RecrutementServiceApplication"
+
+
+ÉTAPE 3: Testez
+────────────────────────────────────────────────────────────
+1. Rafraîchissez le navigateur (Ctrl+Shift+R)
+2. Remplissez le formulaire:
+   - Nom: Dupont
+   - Prénom: Jean
+   - Email: test.unique.2024@example.com
+   - CV: Votre fichier PDF
+   - Lettre: Un texte varié de 100+ caractères
+3. Cliquez "Envoyer la Candidature"
+
+
+═══════════════════════════════════════════════════════════
+  RÉSULTAT ATTENDU
+═══════════════════════════════════════════════════════════
+
+✅ Candidature créée avec succès!
+✅ Apparaît dans le tableau
+✅ Bouton "Télécharger" fonctionne
+
+
+═══════════════════════════════════════════════════════════
+  SI ÇA NE MARCHE TOUJOURS PAS
+═══════════════════════════════════════════════════════════
+
+Le backend n'a pas pris en compte le changement MySQL.
+
+SOLUTION: Tuez complètement le processus backend
+
+Windows:
+1. Ouvrez le Gestionnaire des tâches (Ctrl+Shift+Esc)
+2. Cherchez "java.exe" ou "javaw.exe"
+3. Cliquez droit → "Fin de tâche"
+4. Relancez: mvn spring-boot:run
+
+Linux/Mac:
+1. Trouvez le processus: ps aux | grep java
+2. Tuez-le: kill -9 [PID]
+3. Relancez: mvn spring-boot:run
+
+
+═══════════════════════════════════════════════════════════
+  POURQUOI 67MB AU LIEU DE 16MB?
+═══════════════════════════════════════════════════════════
+
+Pour être sûr que ça marche! 67MB = 64 * 1024 * 1024 bytes
+C'est largement suffisant pour des CVs jusqu'à 5MB.
+
+
+═══════════════════════════════════════════════════════════

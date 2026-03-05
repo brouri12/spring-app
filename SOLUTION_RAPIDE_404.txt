@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════
+    SOLUTION RAPIDE - ERREUR 404 SWAGGER
+═══════════════════════════════════════════════════════════
+
+❌ ERREUR : localhost:8082/swagger-ui.html → 404
+
+✅ SOLUTION EN 3 ÉTAPES :
+
+1️⃣ ARRÊTER LE SERVICE
+   → Appuyez sur Ctrl + C dans le terminal
+
+2️⃣ RECOMPILER
+   → cd forum-service
+   → mvnw clean install
+
+3️⃣ REDÉMARRER
+   → mvnw spring-boot:run
+
+4️⃣ UTILISER LA BONNE URL
+   → http://localhost:8082/swagger-ui/index.html
+   
+   ⚠️ ATTENTION : /swagger-ui/index.html (pas .html seul)
+
+
+═══════════════════════════════════════════════════════════
+    URLS À ESSAYER (DANS L'ORDRE)
+═══════════════════════════════════════════════════════════
+
+✅ URL 1 (PRINCIPALE) :
+http://localhost:8082/swagger-ui/index.html
+
+✅ URL 2 (ALTERNATIVE) :
+http://localhost:8082/swagger-ui.html
+
+✅ URL 3 (SANS INDEX) :
+http://localhost:8082/swagger-ui/
+
+
+═══════════════════════════════════════════════════════════
+    VÉRIFICATION RAPIDE
+═══════════════════════════════════════════════════════════
+
+Avant Swagger, testez que l'API fonctionne :
+
+http://localhost:8082/api/forum
+
+Si vous voyez du JSON → Le service fonctionne ✅
+Si erreur 404 → Le service ne fonctionne pas ❌
+
+
+═══════════════════════════════════════════════════════════
+    COMMANDES COMPLÈTES
+═══════════════════════════════════════════════════════════
+
+cd forum-service
+mvnw clean install
+mvnw spring-boot:run
+
+Puis ouvrir :
+http://localhost:8082/swagger-ui/index.html
+
+
+═══════════════════════════════════════════════════════════
+    SI ÇA NE FONCTIONNE TOUJOURS PAS
+═══════════════════════════════════════════════════════════
+
+Consultez : CORRIGER_SWAGGER_404.md
+
+
+═══════════════════════════════════════════════════════════
+Bon courage ! 🚀
+═══════════════════════════════════════════════════════════

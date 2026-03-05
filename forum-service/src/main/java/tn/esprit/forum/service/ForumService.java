@@ -60,6 +60,13 @@ public class ForumService {
         });
     }
     
+    public Optional<Forum> rouvrirForum(Long id) {
+        return forumRepository.findById(id).map(forum -> {
+            forum.setStatut("OUVERT");
+            return forumRepository.save(forum);
+        });
+    }
+    
     public List<Forum> getForumPlusActif() {
         Pageable pageable = PageRequest.of(0, 5);
         return forumRepository.findForumsPlusActifs(pageable);

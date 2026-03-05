@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.forum.entity.Forum;
 import tn.esprit.forum.entity.MessageForum;
+import tn.esprit.forum.dto.MessageUpdateDTO;
 import tn.esprit.forum.service.ForumService;
 import tn.esprit.forum.service.MessageForumService;
 
@@ -22,7 +23,7 @@ public class ForumRestAPI {
     private final ForumService forumService;
     private final MessageForumService messageService;
     
-    // ========== CRUD FORUM ==========
+    // CRUD FORUM
     
     @GetMapping("/forums")
     public ResponseEntity<List<Forum>> getAllForums() {
@@ -65,6 +66,14 @@ public class ForumRestAPI {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/forums/{id}/rouvrir")
+    public ResponseEntity<Forum> rouvrirForum(@PathVariable Long id) {
+        return forumService.rouvrirForum(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     
     @GetMapping("/forums/recherche")
     public ResponseEntity<Page<Forum>> rechercherForums(
@@ -115,29 +124,38 @@ public class ForumRestAPI {
     @PutMapping("/messages/{id}")
     public ResponseEntity<MessageForum> modifierMessage(
             @PathVariable Long id,
-            @RequestParam String contenu,
-            @RequestParam Long auteurId) {
+            @RequestBody MessageUpdateDTO dto) {
         try {
-            return messageService.modifierMessage(id, contenu, auteurId)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+            System.out.println("📥 Requête PUT reçue pour message ID: " + id);
+            System.out.println("📦 DTO reçu: " + dto);
+            System.out.println("📝 Contenu: " + (dto.getContenu() != null ? dto.getContenu() : "NULL"));
+            
+            if (dto.getContenu() == null || dto.getContenu().trim().isEmpty()) {
+                System.out.println("❌ Contenu vide ou null");
+                return ResponseEntity.badRequest().build();
+            }
+            
+            System.out.println("✅ Validation OK, appel du service...");
+            return messageService.modifierMessage(id, dto.getContenu(), 1L)
+                    .map(message -> {
+                        System.out.println("✅ Message modifié avec succès: " + message.getId());
+                        return ResponseEntity.ok(message);
+                    })
+                    .orElseGet(() -> {
+                        System.out.println("❌ Message non trouvé");
+                        return ResponseEntity.notFound().build();
+                    });
         } catch (RuntimeException e) {
+            System.out.println("❌ Exception: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
     
     @DeleteMapping("/messages/{id}")
-    public ResponseEntity<Void> supprimerMessage(
-            @PathVariable Long id,
-            @RequestParam Long auteurId) {
-        try {
-            if (messageService.supprimerMessage(id, auteurId)) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.notFound().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+    public ResponseEntity<Void> supprimerMessage(@PathVariable Long id) {
+        messageService.supprimerMessageDefinitif(id);
+        return ResponseEntity.noContent().build();
     }
     
     @GetMapping("/forums/{id}/messages/count")

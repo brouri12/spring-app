@@ -1,0 +1,46 @@
+═══════════════════════════════════════════════════════════
+    LIENS SWAGGER - TOUS LES SERVICES
+═══════════════════════════════════════════════════════════
+
+🟢 FORUM SERVICE (Port 8082)
+───────────────────────────────────────────────────────────
+http://localhost:8082/swagger-ui/index.html
+
+
+🔵 RECRUTEMENT SERVICE (Port 8083)
+───────────────────────────────────────────────────────────
+http://localhost:8083/swagger-ui/index.html
+
+
+═══════════════════════════════════════════════════════════
+    DÉMARRAGE
+═══════════════════════════════════════════════════════════
+
+FORUM :
+cd forum-service
+mvnw clean install
+mvnw spring-boot:run
+
+RECRUTEMENT :
+cd recrutement-service
+mvnw clean install
+mvnw spring-boot:run
+
+
+═══════════════════════════════════════════════════════════
+    AUTRES LIENS UTILES
+═══════════════════════════════════════════════════════════
+
+Eureka Dashboard :
+http://localhost:8761
+
+Forum API :
+http://localhost:8082/api/forum
+
+Recrutement API :
+http://localhost:8083/api/recrutement/offres
+
+
+═══════════════════════════════════════════════════════════
+Pour plus de détails : TOUS_LES_LIENS_SWAGGER.md
+═══════════════════════════════════════════════════════════

@@ -1,0 +1,84 @@
+═══════════════════════════════════════════════════════════
+    LIENS SWAGGER - FORUM SERVICE
+═══════════════════════════════════════════════════════════
+
+🔗 INTERFACE SWAGGER UI (PRINCIPAL)
+───────────────────────────────────────────────────────────
+http://localhost:8082/swagger-ui/index.html
+
+
+🔗 INTERFACE SWAGGER UI (ALTERNATIVE)
+───────────────────────────────────────────────────────────
+http://localhost:8082/swagger-ui.html
+
+
+📄 DOCUMENTATION OPENAPI (JSON)
+───────────────────────────────────────────────────────────
+http://localhost:8082/v3/api-docs
+
+
+📄 DOCUMENTATION OPENAPI (YAML)
+───────────────────────────────────────────────────────────
+http://localhost:8082/v3/api-docs.yaml
+
+
+🌐 API FORUM (DIRECT)
+───────────────────────────────────────────────────────────
+http://localhost:8082/api/forum
+
+
+🌐 API FORUM (VIA GATEWAY)
+───────────────────────────────────────────────────────────
+http://localhost:8080/api/forum
+
+
+═══════════════════════════════════════════════════════════
+    COMMANDES DE DÉMARRAGE
+═══════════════════════════════════════════════════════════
+
+1. Recompiler :
+   cd forum-service
+   mvnw clean install
+
+2. Démarrer :
+   mvnw spring-boot:run
+
+3. Ouvrir Swagger :
+   http://localhost:8082/swagger-ui/index.html
+
+
+═══════════════════════════════════════════════════════════
+    DOCUMENTATION
+═══════════════════════════════════════════════════════════
+
+📘 GUIDE_SWAGGER.md           - Guide complet et détaillé
+⚡ SWAGGER_QUICK_ACCESS.md    - Accès rapide
+🎨 SWAGGER_INTERFACE.md       - Aperçu visuel
+📋 SWAGGER_RESUME.md          - Résumé complet
+🚀 DEMARRER_SWAGGER.md        - Instructions de démarrage
+📄 LIENS_SWAGGER.txt          - Ce fichier
+
+
+═══════════════════════════════════════════════════════════
+    PREMIER TEST
+═══════════════════════════════════════════════════════════
+
+1. Ouvrir : http://localhost:8082/swagger-ui/index.html
+2. Cliquer sur : GET /api/forum
+3. Cliquer sur : Try it out
+4. Cliquer sur : Execute
+5. Voir le résultat : Liste de 2 forums
+
+
+═══════════════════════════════════════════════════════════
+    SUPPORT
+═══════════════════════════════════════════════════════════
+
+En cas de problème, consultez :
+- DEMARRER_SWAGGER.md (section Dépannage)
+- GUIDE_SWAGGER.md (section Dépannage)
+
+
+═══════════════════════════════════════════════════════════
+Bon test avec Swagger ! 🚀
+═══════════════════════════════════════════════════════════

@@ -4,13 +4,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.recrutement.entity.CandidatureEnseignant;
 import tn.esprit.recrutement.entity.OffreRecrutement;
 import tn.esprit.recrutement.service.CandidatureService;
 import tn.esprit.recrutement.service.OffreService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/recrutement")
@@ -63,6 +66,14 @@ public class RecrutementRestAPI {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/offres/{id}/rouvrir")
+    public ResponseEntity<OffreRecrutement> rouvrirOffre(@PathVariable Long id) {
+        return offreService.rouvrirOffre(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     
     @GetMapping("/offres/statut/{statut}")
     public ResponseEntity<List<OffreRecrutement>> getOffresByStatut(@PathVariable String statut) {
@@ -84,17 +95,43 @@ public class RecrutementRestAPI {
     @PostMapping("/candidatures/offre/{offreId}")
     public ResponseEntity<Object> postuler(
             @PathVariable Long offreId,
-            @Valid @RequestBody CandidatureEnseignant candidature) {
+            @Valid @RequestBody CandidatureEnseignant candidature,
+            BindingResult bindingResult) {
+
+        System.out.println("📥 Requête POST reçue pour offre ID: " + offreId);
+        System.out.println("📦 Candidature reçue: " + candidature.getNom_candidat() + " " + candidature.getPrenom_candidat());
+        System.out.println("📧 Email: " + candidature.getEmail());
+        System.out.println("📄 CV filename: " + candidature.getCv_filename());
+        System.out.println("📝 Lettre motivation length: " + (candidature.getLettre_motivation() != null ? candidature.getLettre_motivation().length() : 0));
+        
+        if (bindingResult.hasErrors()) {
+            System.out.println("❌ Erreurs de validation:");
+            bindingResult.getAllErrors().forEach(error -> {
+                System.out.println("  - " + error.getDefaultMessage());
+            });
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errors);
+        }
 
         try {
+            System.out.println("✅ Validation OK, appel du service...");
             return candidatureService.postuler(offreId, candidature)
-                    .<ResponseEntity<Object>>map(saved ->
-                            ResponseEntity.status(HttpStatus.CREATED).body(saved))
-                    .orElseGet(() ->
-                            ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                    .body("Offre introuvable"));
+                    .<ResponseEntity<Object>>map(saved -> {
+                        System.out.println("✅ Candidature créée avec succès: " + saved.getId());
+                        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+                    })
+                    .orElseGet(() -> {
+                        System.out.println("❌ Offre introuvable");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body("Offre introuvable");
+                    });
 
         } catch (RuntimeException e) {
+            System.out.println("❌ Exception: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(e.getMessage());
         }

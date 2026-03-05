@@ -49,6 +49,13 @@ public class OffreService {
         });
     }
     
+    public Optional<OffreRecrutement> rouvrirOffre(Long id) {
+        return offreRepository.findById(id).map(offre -> {
+            offre.setStatut("OUVERTE");
+            return offreRepository.save(offre);
+        });
+    }
+    
     public boolean deleteOffre(Long id) {
         return offreRepository.findById(id).map(offre -> {
             offreRepository.delete(offre);

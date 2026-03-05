@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,4 +44,8 @@ public class MessageForum {
     @JoinColumn(name = "id_forum")
     @JsonIgnore
     private Forum forum;
+    
+    @OneToMany(mappedBy = "messageForum", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<MediaFile> mediaFiles = new ArrayList<>();
 }

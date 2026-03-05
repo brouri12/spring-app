@@ -1,0 +1,230 @@
+### ========================================
+### FORUM SERVICE - TESTS
+### ========================================
+
+### 1. GET All Forums
+GET http://localhost:8082/api/forum
+Accept: application/json
+
+### 2. GET Forum by ID
+GET http://localhost:8082/api/forum/1
+Accept: application/json
+
+### 3. POST Create Forum
+POST http://localhost:8082/api/forum
+Content-Type: application/json
+
+{
+  "titre": "Discussion Python",
+  "description": "Forum pour les questions Python",
+  "cree_par": 3,
+  "niveau": "L2",
+  "groupe": "INFO-C",
+  "cours": "Programmation Python",
+  "statut": "OUVERT"
+}
+
+### 4. PUT Update Forum
+PUT http://localhost:8082/api/forum/1
+Content-Type: application/json
+
+{
+  "titre": "Discussion Java Spring Boot - Mise à jour",
+  "description": "Forum mis à jour avec nouvelles règles",
+  "niveau": "L3",
+  "groupe": "INFO-A",
+  "cours": "Développement Web Avancé",
+  "statut": "OUVERT"
+}
+
+### 5. DELETE Forum
+DELETE http://localhost:8082/api/forum/3
+
+### 6. PATCH Fermer Forum
+PATCH http://localhost:8082/api/forum/1/fermer
+
+### 7. GET Messages by Forum
+GET http://localhost:8082/api/forum/1/messages
+Accept: application/json
+
+### 8. POST Publier Message
+POST http://localhost:8082/api/forum/message?forumId=1
+Content-Type: application/json
+
+{
+  "contenu": "Nouveau message de test depuis IntelliJ",
+  "auteur_id": 103,
+  "type_auteur": "ETUDIANT",
+  "statut": "ACTIF"
+}
+
+### 9. PUT Modifier Message
+PUT http://localhost:8082/api/forum/message/1?contenu=Message%20modifié&auteurId=101
+
+### 10. DELETE Supprimer Message
+DELETE http://localhost:8082/api/forum/message/1?auteurId=101
+
+### 11. GET Compter Messages
+GET http://localhost:8082/api/forum/1/messages/count
+Accept: application/json
+
+### 12. GET Forums Plus Actifs
+GET http://localhost:8082/api/forum/plus-actifs
+Accept: application/json
+
+### 13. GET Recherche Forums (avec pagination)
+GET http://localhost:8082/api/forum/recherche?titre=Java&page=0&size=10
+Accept: application/json
+
+### 14. GET Forums par Niveau
+GET http://localhost:8082/api/forum/niveau/L3
+Accept: application/json
+
+### 15. GET Forums par Statut
+GET http://localhost:8082/api/forum/statut/OUVERT
+Accept: application/json
+
+### ========================================
+### RECRUTEMENT SERVICE - TESTS
+### ========================================
+
+### 16. GET All Offres
+GET http://localhost:8083/api/recrutement/offres
+Accept: application/json
+
+### 17. GET Offre by ID
+GET http://localhost:8083/api/recrutement/offres/1
+Accept: application/json
+
+### 18. POST Create Offre
+POST http://localhost:8083/api/recrutement/offres
+Content-Type: application/json
+
+{
+  "titre": "Enseignant Cybersécurité",
+  "description": "Nous recherchons un enseignant spécialisé en cybersécurité et sécurité des systèmes",
+  "specialite": "Cybersécurité",
+  "experience_min": 4,
+  "statut": "OUVERTE"
+}
+
+### 19. PUT Update Offre
+PUT http://localhost:8083/api/recrutement/offres/1
+Content-Type: application/json
+
+{
+  "titre": "Enseignant Java/Spring Boot - Senior",
+  "description": "Description mise à jour avec nouvelles exigences",
+  "specialite": "Développement Web",
+  "experience_min": 5,
+  "statut": "OUVERTE"
+}
+
+### 20. DELETE Offre
+DELETE http://localhost:8083/api/recrutement/offres/3
+
+### 21. PATCH Fermer Offre
+PATCH http://localhost:8083/api/recrutement/offres/1/fermer
+
+### 22. GET Offres par Statut
+GET http://localhost:8083/api/recrutement/offres/statut/OUVERTE
+Accept: application/json
+
+### 23. GET Offres par Spécialité
+GET http://localhost:8083/api/recrutement/offres/specialite/Intelligence%20Artificielle
+Accept: application/json
+
+### 24. GET All Candidatures
+GET http://localhost:8083/api/recrutement/candidatures
+Accept: application/json
+
+### 25. POST Postuler à une Offre
+POST http://localhost:8083/api/recrutement/candidatures?offreId=1
+Content-Type: application/json
+
+{
+  "nom_candidat": "Gharbi",
+  "prenom_candidat": "Ahmed",
+  "email": "ahmed.gharbi@example.com",
+  "cv_url": "https://example.com/cv/ahmed.pdf",
+  "lettre_motivation": "Je suis très motivé pour ce poste d'enseignant en développement web. J'ai 5 ans d'expérience..."
+}
+
+### 26. PATCH Accepter Candidature
+PATCH http://localhost:8083/api/recrutement/candidatures/1/statut?statut=ACCEPTEE
+
+### 27. PATCH Refuser Candidature
+PATCH http://localhost:8083/api/recrutement/candidatures/2/statut?statut=REFUSEE
+
+### 28. GET Candidatures par Offre
+GET http://localhost:8083/api/recrutement/candidatures/offre/1
+Accept: application/json
+
+### 29. GET Candidatures par Statut
+GET http://localhost:8083/api/recrutement/candidatures/statut/EN_ATTENTE
+Accept: application/json
+
+### 30. GET Filtrer par Spécialité
+GET http://localhost:8083/api/recrutement/candidatures/specialite/Développement%20Web
+Accept: application/json
+
+### 31. POST Convertir en Enseignant
+POST http://localhost:8083/api/recrutement/candidatures/1/convertir
+
+### ========================================
+### EUREKA SERVER - VERIFICATION
+### ========================================
+
+### 32. Vérifier Eureka Dashboard
+GET http://localhost:8761
+Accept: text/html
+
+### 33. Eureka Apps (JSON)
+GET http://localhost:8761/eureka/apps
+Accept: application/json
+
+### ========================================
+### TESTS DE CHARGE (Optionnel)
+### ========================================
+
+### 34. Créer plusieurs forums rapidement
+POST http://localhost:8082/api/forum
+Content-Type: application/json
+
+{
+  "titre": "Forum Test 1",
+  "description": "Test de charge",
+  "cree_par": 1,
+  "niveau": "L1",
+  "groupe": "TEST",
+  "cours": "Test",
+  "statut": "OUVERT"
+}
+
+###
+POST http://localhost:8082/api/forum
+Content-Type: application/json
+
+{
+  "titre": "Forum Test 2",
+  "description": "Test de charge",
+  "cree_par": 1,
+  "niveau": "L2",
+  "groupe": "TEST",
+  "cours": "Test",
+  "statut": "OUVERT"
+}
+
+###
+POST http://localhost:8082/api/forum
+Content-Type: application/json
+
+{
+  "titre": "Forum Test 3",
+  "description": "Test de charge",
+  "cree_par": 1,
+  "niveau": "L3",
+  "groupe": "TEST",
+  "cours": "Test",
+  "statut": "OUVERT"
+}
