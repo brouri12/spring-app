@@ -1,741 +1,394 @@
-# PLATEFORME ÉDUCATIVE - E-Learning Platform
+# 🌿 JUNGLE IN ENGLISH — Spring Boot Microservices
 
 [![Esprit](https://img.shields.io/badge/Esprit-School%20of%20Engineering-red)](https://esprit.tn)
 [![Academic Year](https://img.shields.io/badge/Academic%20Year-2025--2026-blue)](https://esprit.tn)
 [![PIDEV](https://img.shields.io/badge/Project-PIDEV-green)](https://esprit.tn)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)](https://spring.io/projects/spring-boot)
-[![Angular](https://img.shields.io/badge/Angular-18.0-red)](https://angular.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://www.mysql.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-brightgreen)](https://spring.io)
+[![Java](https://img.shields.io/badge/Java-17-orange)](https://openjdk.org)
 
-## Overview
-
-Plateforme Éducative is a comprehensive e-learning platform designed to provide an interactive and engaging learning experience. The platform features a microservices architecture with separate frontend applications for users and administrators, offering advanced forum discussions, multimedia content sharing, recruitment management, and real-time notifications.
-
-*Developed at Esprit School of Engineering – Tunisia*
-
-## Features
-
-### User Features
-- **Authentication & Authorization**
-  - Secure login and registration system
-  - Role-based access control (Student, Teacher, Admin)
-  
-- **Interactive Forums**
-  - Create and participate in discussion forums
-  - Like, reply, and share messages
-  - Report inappropriate content
-  - Real-time message updates
-  
-- **Multimedia Content**
-  - Upload images (JPG, PNG, GIF, WebP - max 5MB)
-  - Upload audio files (MP3, WAV, OGG - max 10MB)
-  - Upload documents (PDF, ZIP, DOC, XLS - max 20MB)
-  - Embed YouTube/Vimeo videos
-  - Automatic thumbnail generation
-  
-- **Intelligent Chatbot**
-  - AI-powered virtual assistant
-  - Context-aware responses
-  - Local knowledge base
-  - Conversation history
-  
-- **Email Notifications**
-  - Customizable notification preferences
-  - New message alerts
-  - Reply notifications
-  - Like notifications
-  - Mention alerts (@username)
-  
-- **Recruitment System**
-  - Browse job offers
-  - Submit applications with CV upload
-  - Track application status
-  - Automated validation
-  
-- **Internationalization**
-  - French (default)
-  - English
-  - Real-time language switching
-  
-- **User Interface**
-  - Dark mode / Light mode
-  - Responsive design (mobile, tablet, desktop)
-  - Modern and intuitive interface
-
-### Admin Features
-- **Analytics Dashboard**
-  - Real-time forum statistics
-  - User engagement metrics
-  - Interactive charts and graphs
-  
-- **Forum Management**
-  - Create and manage forums
-  - Moderate messages
-  - Handle user reports
-  - Archive/delete content
-  
-- **Recruitment Management**
-  - Create job offers
-  - Review applications
-  - Manage candidate CVs
-  - Update application status
-  
-- **User Management**
-  - User administration
-  - Role assignment
-  - Activity monitoring
-  
-- **Content Moderation**
-  - Review reported content
-  - Automated content filtering
-  - Manual moderation tools
-
-### Technical Features
-- **Microservices Architecture**
-  - Scalable and maintainable service-oriented design
-  - Independent service deployment
-  
-- **API Gateway**
-  - Centralized routing and load balancing
-  - CORS configuration
-  
-- **Service Discovery**
-  - Eureka server for service registration
-  - Dynamic service discovery
-  
-- **Database Per Service**
-  - Independent data management
-  - MySQL databases
-  
-- **File Storage**
-  - Secure file upload and storage
-  - Automatic file validation
-  - Thumbnail generation for images
-  
-- **Email System**
-  - SMTP integration (Gmail)
-  - HTML email templates
-  - Automated retry mechanism
-  
-- **Scheduled Tasks**
-  - Automated subscription checks
-  - Periodic data cleanup
-  
-- **API Documentation**
-  - Swagger/OpenAPI 3.0
-  - Interactive API testing
-
-## Tech Stack
-
-### Frontend
-- **Framework**: Angular 18
-- **Language**: TypeScript 5.5
-- **Styling**: Tailwind CSS 3.4
-- **Charts**: Chart.js (for analytics)
-- **HTTP Client**: Angular HttpClient
-- **State Management**: RxJS Observables
-- **Internationalization**: ngx-translate
-- **Icons**: Font Awesome
-
-### Backend
-- **Framework**: Spring Boot 3.2.0
-- **Language**: Java 17
-- **API Gateway**: Spring Cloud Gateway
-- **Service Discovery**: Eureka Server
-- **Security**: Spring Security
-- **Database**: MySQL 8.0
-- **ORM**: Spring Data JPA / Hibernate
-- **Email**: Spring Mail + Thymeleaf
-- **File Storage**: Local file system
-- **Validation**: Bean Validation
-- **Documentation**: SpringDoc OpenAPI
-
-### DevOps & Tools
-- **Build Tool**: Maven 3.8+
-- **Version Control**: Git / GitHub
-- **API Testing**: Postman
-- **Database Management**: MySQL Workbench
-- **IDE**: IntelliJ IDEA, VS Code
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    CLIENT APPLICATIONS                       │
-│  ┌──────────────────┐         ┌──────────────────┐         │
-│  │  User Frontend   │         │  Admin Backend   │         │
-│  │  (Angular)       │         │  (Angular)       │         │
-│  │  Port: 4300      │         │  Port: 4301      │         │
-│  └──────────────────┘         └──────────────────┘         │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                      API GATEWAY                             │
-│         Spring Cloud Gateway (Port: 8888)                    │
-│                CORS + Routing + Load Balancing               │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                   EUREKA SERVER                              │
-│              Service Discovery (Port: 8761)                  │
-│              Service Registration & Health Check             │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                     MICROSERVICES                            │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │ Forum        │  │ Recrutement  │  │   Config     │     │
-│  │ Service      │  │ Service      │  │   Server     │     │
-│  │ Port: 8082   │  │ Port: 8083   │  │   Port: 8888 │     │
-│  │              │  │              │  │              │     │
-│  │ - Forums     │  │ - Offres     │  │ - Central    │     │
-│  │ - Messages   │  │ - Candidats  │  │   Config     │     │
-│  │ - Multimedia │  │ - CV Upload  │  │              │     │
-│  │ - Email      │  │ - Validation │  │              │     │
-│  │ - Chatbot    │  │              │  │              │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────────┐
-│                      DATABASES                               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │   forum_db   │  │ recrutement  │  │   config_db  │     │
-│  │   (MySQL)    │  │     _db      │  │   (MySQL)    │     │
-│  │              │  │   (MySQL)    │  │              │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Microservices
-
-1. **Forum Service** (Port 8082)
-   - Forum and message management
-   - Multimedia file handling (images, audio, documents, videos)
-   - Email notification system
-   - Like and reply system
-   - Content moderation
-   - Analytics and statistics
-   - Database: forum_db
-
-2. **Recrutement Service** (Port 8083)
-   - Job offer management
-   - Application processing
-   - CV upload and storage (BLOB)
-   - Candidate validation
-   - Application status tracking
-   - Database: recrutement_db
-
-3. **API Gateway** (Port 8888)
-   - Request routing
-   - CORS configuration
-   - Load balancing
-   - Rate limiting
-
-4. **Eureka Server** (Port 8761)
-   - Service discovery
-   - Service registration
-   - Health monitoring
-   - Load balancing support
-
-## Getting Started
-
-### Prerequisites
-
-- Java 17 or higher
-- Node.js 18+ and npm
-- MySQL 8.0
-- Maven 3.8+
-- Git
-
-### Installation
-
-1. **Clone the repositories**
-
-```bash
-# Backend (Spring Boot)
-git clone https://github.com/brouri12/spring-app.git
-cd spring-app
-git checkout rahma
-
-# Frontend (Angular)
-git clone https://github.com/brouri12/angular-app.git
-cd angular-app
-git checkout rahma
-```
-
-2. **Setup MySQL Databases**
-
-```sql
--- Create databases
-CREATE DATABASE forum_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE recrutement_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Create user (optional)
-CREATE USER 'pidev_user'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON forum_db.* TO 'pidev_user'@'localhost';
-GRANT ALL PRIVILEGES ON recrutement_db.* TO 'pidev_user'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-3. **Configure Backend Services**
-
-Update `application.properties` in each service:
-
-**Forum Service**:
-```properties
-# Server
-server.port=8082
-spring.application.name=forum-service
-
-# Database
-spring.datasource.url=jdbc:mysql://localhost:3306/forum_db?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-
-# Eureka
-eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
-
-# File Upload
-spring.servlet.multipart.max-file-size=50MB
-spring.servlet.multipart.max-request-size=50MB
-
-# Email (Gmail)
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=YOUR_EMAIL@gmail.com
-spring.mail.password=YOUR_APP_PASSWORD
-```
-
-**Recrutement Service**:
-```properties
-# Server
-server.port=8083
-spring.application.name=recrutement-service
-
-# Database
-spring.datasource.url=jdbc:mysql://localhost:3306/recrutement_db?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-
-# Eureka
-eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
-```
-
-4. **Start Backend Services**
-
-**Terminal 1 - Eureka Server**:
-```bash
-cd eureka-server
-mvn spring-boot:run
-# Access: http://localhost:8761
-```
-
-**Terminal 2 - API Gateway**:
-```bash
-cd api-gateway
-mvn spring-boot:run
-# Access: http://localhost:8888
-```
-
-**Terminal 3 - Forum Service**:
-```bash
-cd forum-service
-mvn spring-boot:run
-# Access: http://localhost:8082
-```
-
-**Terminal 4 - Recrutement Service**:
-```bash
-cd recrutement-service
-mvn spring-boot:run
-# Access: http://localhost:8083
-```
-
-5. **Start Frontend Applications**
-
-**Terminal 5 - User Frontend**:
-```bash
-cd angular-app/frontend/angular-app
-npm install
-ng serve --port 4300
-# Access: http://localhost:4300
-```
-
-**Terminal 6 - Admin Back-Office**:
-```bash
-cd angular-app/back-office
-npm install
-ng serve --port 4301
-# Access: http://localhost:4301
-```
-
-### Quick Start Script
-
-**Windows** (create `start-all.bat`):
-```batch
-@echo off
-start cmd /k "cd eureka-server && mvn spring-boot:run"
-timeout /t 30
-start cmd /k "cd api-gateway && mvn spring-boot:run"
-timeout /t 20
-start cmd /k "cd forum-service && mvn spring-boot:run"
-start cmd /k "cd recrutement-service && mvn spring-boot:run"
-timeout /t 30
-start cmd /k "cd angular-app\frontend\angular-app && ng serve --port 4300"
-start cmd /k "cd angular-app\back-office && ng serve --port 4301"
-```
-
-**Linux/Mac** (create `start-all.sh`):
-```bash
-#!/bin/bash
-gnome-terminal -- bash -c "cd eureka-server && mvn spring-boot:run; exec bash"
-sleep 30
-gnome-terminal -- bash -c "cd api-gateway && mvn spring-boot:run; exec bash"
-sleep 20
-gnome-terminal -- bash -c "cd forum-service && mvn spring-boot:run; exec bash"
-gnome-terminal -- bash -c "cd recrutement-service && mvn spring-boot:run; exec bash"
-sleep 30
-gnome-terminal -- bash -c "cd angular-app/frontend/angular-app && ng serve --port 4300; exec bash"
-gnome-terminal -- bash -c "cd angular-app/back-office && ng serve --port 4301; exec bash"
-```
-
-## Project Structure
-
-```
-plateforme-educative/
-├── eureka-server/              # Service Discovery
-│   ├── src/main/java/
-│   └── src/main/resources/
-│       └── application.properties
-│
-├── api-gateway/                # API Gateway
-│   ├── src/main/java/
-│   └── src/main/resources/
-│       └── application.properties
-│
-├── forum-service/              # Forum Microservice
-│   ├── src/main/java/
-│   │   └── tn/esprit/forum/
-│   │       ├── controller/     # REST Controllers
-│   │       │   ├── ForumRestAPI.java
-│   │       │   ├── MultimediaController.java
-│   │       │   ├── EmailController.java
-│   │       │   ├── InteractionController.java
-│   │       │   └── AnalyseController.java
-│   │       ├── service/        # Business Logic
-│   │       │   ├── ForumService.java
-│   │       │   ├── MultimediaService.java
-│   │       │   ├── EmailService.java
-│   │       │   └── FileStorageService.java
-│   │       ├── repository/     # Data Access
-│   │       │   ├── ForumRepository.java
-│   │       │   ├── MediaFileRepository.java
-│   │       │   └── EmailPreferenceRepository.java
-│   │       ├── entity/         # JPA Entities
-│   │       │   ├── Forum.java
-│   │       │   ├── MessageForum.java
-│   │       │   ├── MediaFile.java
-│   │       │   ├── EmailPreference.java
-│   │       │   └── EmailLog.java
-│   │       ├── dto/            # Data Transfer Objects
-│   │       ├── config/         # Configuration
-│   │       └── exception/      # Exception Handling
-│   └── src/main/resources/
-│       ├── application.properties
-│       └── templates/          # Email Templates
-│           └── email/
-│
-├── recrutement-service/        # Recruitment Microservice
-│   ├── src/main/java/
-│   │   └── tn/esprit/recrutement/
-│   │       ├── controller/
-│   │       │   └── RecrutementRestAPI.java
-│   │       ├── service/
-│   │       │   ├── OffreService.java
-│   │       │   └── CandidatureService.java
-│   │       ├── repository/
-│   │       │   ├── OffreRepository.java
-│   │       │   └── CandidatureRepository.java
-│   │       └── entity/
-│   │           ├── OffreEmploi.java
-│   │           └── CandidatureEnseignant.java
-│   └── src/main/resources/
-│       └── application.properties
-│
-└── angular-app/                # Frontend Applications
-    ├── frontend/angular-app/   # User Frontend
-    │   ├── src/app/
-    │   │   ├── components/
-    │   │   │   ├── chatbot-widget/
-    │   │   │   ├── email-preferences/
-    │   │   │   ├── language-switcher/
-    │   │   │   ├── header/
-    │   │   │   └── footer/
-    │   │   ├── pages/
-    │   │   │   ├── home/
-    │   │   │   ├── forums-public/
-    │   │   │   └── recrutement-public/
-    │   │   ├── services/
-    │   │   │   ├── forum.service.ts
-    │   │   │   ├── multimedia.service.ts
-    │   │   │   ├── chatbot.service.ts
-    │   │   │   └── email-preference.service.ts
-    │   │   └── models/
-    │   └── public/i18n/
-    │       ├── en.json
-    │       └── fr.json
-    │
-    └── back-office/            # Admin Frontend
-        ├── src/app/
-        │   ├── components/
-        │   │   ├── sidebar/
-        │   │   └── topbar/
-        │   ├── pages/
-        │   │   ├── dashboard/
-        │   │   ├── forum/
-        │   │   ├── recrutement/
-        │   │   └── analytics/
-        │   └── services/
-        └── src/assets/i18n/
-```
-
-## API Documentation
-
-### Forum Service Endpoints
-
-#### Forums
-```http
-GET    /api/forum/forums              # Get all forums
-GET    /api/forum/forums/{id}         # Get forum by ID
-POST   /api/forum/forums              # Create forum
-PUT    /api/forum/forums/{id}         # Update forum
-DELETE /api/forum/forums/{id}         # Delete forum
-```
-
-#### Messages
-```http
-GET    /api/forum/messages             # Get all messages
-GET    /api/forum/messages/{id}        # Get message by ID
-POST   /api/forum/messages             # Create message
-PUT    /api/forum/messages/{id}        # Update message
-DELETE /api/forum/messages/{id}        # Delete message
-GET    /api/forum/forums/{id}/messages # Get messages by forum
-```
-
-#### Multimedia
-```http
-POST   /api/forum/multimedia/upload/image      # Upload image
-POST   /api/forum/multimedia/upload/audio      # Upload audio
-POST   /api/forum/multimedia/upload/document   # Upload document
-POST   /api/forum/multimedia/embed/video       # Embed video
-GET    /api/forum/multimedia/file/{id}         # Download file
-GET    /api/forum/multimedia/thumbnail/{id}    # Get thumbnail
-DELETE /api/forum/multimedia/file/{id}         # Delete file
-GET    /api/forum/multimedia/message/{id}      # Get media by message
-GET    /api/forum/multimedia/gallery/{forumId} # Get forum gallery
-```
-
-#### Email Notifications
-```http
-POST   /api/forum/email/preferences        # Create preferences
-GET    /api/forum/email/preferences/{id}   # Get preferences
-PUT    /api/forum/email/preferences/{id}   # Update preferences
-POST   /api/forum/email/test               # Send test email
-```
-
-#### Interactions
-```http
-POST   /api/forum/likes                    # Like message
-DELETE /api/forum/likes/{id}               # Unlike message
-GET    /api/forum/messages/{id}/likes      # Get message likes
-POST   /api/forum/replies                  # Reply to message
-GET    /api/forum/messages/{id}/replies    # Get message replies
-POST   /api/forum/signalements             # Report content
-```
-
-### Recrutement Service Endpoints
-
-#### Job Offers
-```http
-GET    /api/recrutement/offres             # Get all offers
-GET    /api/recrutement/offres/{id}        # Get offer by ID
-POST   /api/recrutement/offres             # Create offer
-PUT    /api/recrutement/offres/{id}        # Update offer
-DELETE /api/recrutement/offres/{id}        # Delete offer
-GET    /api/recrutement/offres/actives     # Get active offers
-```
-
-#### Applications
-```http
-GET    /api/recrutement/candidatures       # Get all applications
-GET    /api/recrutement/candidatures/{id}  # Get application by ID
-POST   /api/recrutement/candidatures       # Submit application
-PUT    /api/recrutement/candidatures/{id}  # Update application
-GET    /api/recrutement/candidatures/cv/{id} # Download CV
-GET    /api/recrutement/offres/{id}/candidatures # Get offer applications
-```
-
-### API Gateway Routes
-
-- **Base URL**: http://localhost:8888
-- **Forum Service**: `/forum-service/**` → http://localhost:8082
-- **Recrutement Service**: `/recrutement-service/**` → http://localhost:8083
-
-### Interactive API Documentation
-
-- **Swagger Forum**: http://localhost:8082/swagger-ui.html
-- **Swagger Recrutement**: http://localhost:8083/swagger-ui.html
-- **Eureka Dashboard**: http://localhost:8761
-
-## Testing
-
-### Run Backend Tests
-
-```bash
-# Forum Service
-cd forum-service
-mvn test
-
-# Recrutement Service
-cd recrutement-service
-mvn test
-
-# Run all tests with coverage
-mvn clean test jacoco:report
-```
-
-### Run Frontend Tests
-
-```bash
-# User Frontend
-cd angular-app/frontend/angular-app
-npm test
-
-# Admin Back-Office
-cd angular-app/back-office
-npm test
-
-# E2E Tests
-npm run e2e
-```
-
-### API Testing with Postman
-
-Import the Postman collection: `Microservices_Tests.postman_collection.json`
-
-1. Import collection in Postman
-2. Configure environment variables
-3. Run test suites
-
-## Deployment
-
-### Build for Production
-
-**Backend**:
-```bash
-# Build all services
-cd forum-service && mvn clean package
-cd recrutement-service && mvn clean package
-cd api-gateway && mvn clean package
-cd eureka-server && mvn clean package
-```
-
-**Frontend**:
-```bash
-# Build user frontend
-cd angular-app/frontend/angular-app
-ng build --configuration=production
-
-# Build admin back-office
-cd angular-app/back-office
-ng build --configuration=production
-```
-
-### Docker Deployment (Optional)
-
-Create `docker-compose.yml`:
-```yaml
-version: '3.8'
-services:
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: forum_db
-    ports:
-      - "3306:3306"
-  
-  eureka-server:
-    build: ./eureka-server
-    ports:
-      - "8761:8761"
-  
-  forum-service:
-    build: ./forum-service
-    ports:
-      - "8082:8082"
-    depends_on:
-      - mysql
-      - eureka-server
-```
-
-## Contributors
-
-- **Development Team** - Esprit School of Engineering Students
-- **Academic Supervisor** - [Supervisor Name]
-- **Project Manager** - [PM Name]
-
-## Academic Context
-
-**Developed at Esprit School of Engineering - Tunisia**
-
-- **Project Type**: PIDEV (Projet Intégré de Développement)
-- **Class**: 4A (Fourth Year)
-- **Academic Year**: 2025–2026
-- **Institution**: Esprit School of Engineering
-- **Location**: Tunisia
-- **Branch**: `rahma`
-
-This project was developed as part of the integrated development project curriculum at Esprit, focusing on building a complete full-stack application using modern technologies and microservices architecture.
-
-## Key Learning Outcomes
-
-- Microservices architecture design and implementation
-- RESTful API development with Spring Boot
-- Frontend development with Angular
-- Database design and management
-- File upload and storage systems
-- Email notification systems
-- Real-time communication
-- Security and authentication
-- API documentation with Swagger
-- Version control with Git
-- Agile development methodology
-
-## Acknowledgments
-
-- **Esprit School of Engineering** for providing the academic framework and resources
-- **Spring Boot** and **Angular** communities for excellent documentation
-- **MySQL** for reliable database management
-- **Tailwind CSS** for modern UI components
-- All open-source contributors whose libraries made this project possible
-
-## License
-
-This project is developed for academic purposes at Esprit School of Engineering.
-
-## Contact
-
-For questions or support:
-- **GitHub**: [brouri12](https://github.com/brouri12)
-- **Repositories**:
-  - Backend: https://github.com/brouri12/spring-app
-  - Frontend: https://github.com/brouri12/angular-app
+> Plateforme éducative — Architecture Microservices développée à **Esprit School of Engineering** — PIDEV 2025-2026
 
 ---
 
-**© 2025-2026 Esprit School of Engineering - Tunisia**
+## 📁 Structure du Projet
 
-*Developed with ❤️ for education*
+```
+spring-app/
+├── eureka-server/          # Service Discovery (Port 8761)
+├── api-gateway/            # API Gateway + JWT (Port 8086)
+├── forum-service/          # Service Forum (Port 8082)
+└── recrutement-service/    # Service Recrutement (Port 8083)
+```
+
+---
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+- Java 17+
+- Maven 3.8+
+- MySQL 8.0 (XAMPP)
+- IntelliJ IDEA
+
+### Ordre de démarrage
+
+```
+1. Démarrer MySQL (XAMPP)
+2. eureka-server       → http://localhost:8761
+3. api-gateway         → http://localhost:8086
+4. forum-service       → http://localhost:8082
+5. recrutement-service → http://localhost:8083
+```
+
+### Bases de données MySQL
+```sql
+CREATE DATABASE forum_db;
+CREATE DATABASE recrutement_db;
+```
+
+---
+
+## 🏗️ Architecture Microservices
+
+```
+Angular Frontend (4300)     Angular Back-Office (4301)
+        │                              │
+        └──────────────┬───────────────┘
+                       │
+              API Gateway (8086)
+         ┌─────────────────────────┐
+         │  JWT Validation         │
+         │  CORS Configuration     │
+         │  Load Balancing (lb://) │
+         └────────────┬────────────┘
+                      │
+         ┌────────────┴────────────┐
+         │                         │
+  Forum Service (8082)   Recrutement Service (8083)
+  DB: forum_db           DB: recrutement_db
+         │                         │
+         └────────────┬────────────┘
+                      │
+             Eureka Server (8761)
+             Service Discovery
+```
+
+---
+
+## 📦 Services
+
+### 1. Eureka Server (Port 8761)
+
+Service Discovery Netflix Eureka. Tous les microservices s'enregistrent automatiquement.
+
+- Dashboard : http://localhost:8761
+- Stack : Spring Boot 3.2, Spring Cloud 2023.0.0
+
+---
+
+### 2. API Gateway (Port 8086)
+
+Routage centralisé vers les microservices avec CORS global.
+
+**Routes configurées :**
+| Route | Destination |
+|-------|-------------|
+| `/forum/**` | forum-service |
+| `/recrutement/**` | recrutement-service |
+| `/api/forum/**` | forum-service (direct) |
+| `/api/recrutement/**` | recrutement-service (direct) |
+
+**Configuration CORS :**
+```properties
+spring.cloud.gateway.globalcors.cors-configurations.[/**].allowed-origins=*
+spring.cloud.gateway.globalcors.cors-configurations.[/**].allowed-methods=GET,POST,PUT,DELETE,PATCH,OPTIONS
+```
+
+---
+
+### 3. Forum Service (Port 8082)
+
+Gestion des forums de discussion avec fonctionnalités avancées.
+
+#### Entités
+- `Forum` — Forums de discussion
+- `MessageForum` — Messages dans les forums
+- `Like` — Likes sur les messages
+- `Signalement` — Signalements de contenu
+- `MediaFile` — Fichiers multimédias uploadés
+- `EmailPreference` — Préférences email utilisateur
+- `EmailLog` — Historique des emails envoyés
+
+#### Endpoints principaux
+```
+GET    /api/forum/forums                        # Liste des forums
+GET    /api/forum/messages/forum/{id}           # Messages d'un forum
+POST   /api/forum/messages                      # Créer un message
+PUT    /api/forum/messages/{id}                 # Modifier un message
+DELETE /api/forum/messages/{id}                 # Supprimer un message
+POST   /api/forum/likes/{messageId}             # Liker un message
+POST   /api/forum/signalements                  # Signaler un message
+POST   /api/forum/multimedia/upload             # Upload fichier
+GET    /api/forum/multimedia/message/{id}       # Médias d'un message
+```
+
+#### Fonctionnalités avancées
+- ✅ Upload multimédia (images, audio, documents, YouTube)
+- ✅ Stockage fichiers sur disque avec organisation par type/date
+- ✅ Détection type MIME (Apache Tika)
+- ✅ Génération thumbnails (Thumbnailator)
+- ✅ Système de likes avec compteur
+- ✅ Signalement de contenu
+- ✅ Notifications email (Gmail SMTP)
+- ✅ Préférences email par utilisateur
+
+#### Swagger UI
+```
+http://localhost:8082/swagger-ui/index.html
+```
+
+---
+
+### 4. Recrutement Service (Port 8083)
+
+Gestion complète du recrutement d'enseignants avec logique métier avancée.
+
+#### Entités
+- `OffreRecrutement` — Offres d'emploi (CDI/CDD/Vacataire)
+- `CandidatureEnseignant` — Candidatures avec CV (LONGBLOB)
+- `AdminNotification` — Notifications in-app pour l'admin
+
+#### Endpoints principaux
+```
+# Offres
+GET    /api/recrutement/offres                          # Toutes les offres
+GET    /api/recrutement/offres/statut/{statut}          # Filtrer par statut
+POST   /api/recrutement/offres                          # Créer une offre
+PUT    /api/recrutement/offres/{id}                     # Modifier
+DELETE /api/recrutement/offres/{id}                     # Supprimer
+PATCH  /api/recrutement/offres/{id}/fermer              # Fermer
+PATCH  /api/recrutement/offres/{id}/rouvrir             # Rouvrir
+
+# Candidatures
+POST   /api/recrutement/candidatures/offre/{id}         # Postuler
+GET    /api/recrutement/candidatures/offre/{id}         # Par offre
+PATCH  /api/recrutement/candidatures/{id}/statut        # Changer statut
+GET    /api/recrutement/candidatures/{id}/cv            # Télécharger CV
+
+# Logique métier avancée
+GET    /api/recrutement/candidatures/doublon            # Vérifier doublon
+GET    /api/recrutement/candidatures/{id}/offre-compatible  # Réaffectation
+GET    /api/recrutement/offres/{id}/classement          # Classement par score
+GET    /api/recrutement/candidatures/{id}/scoring       # Score détaillé
+POST   /api/recrutement/analyse-lettre                  # Analyse NLP lettre
+
+# Notifications
+GET    /api/recrutement/notifications/unread            # Non lues
+PATCH  /api/recrutement/notifications/{id}/read         # Marquer lu
+PATCH  /api/recrutement/notifications/read-all          # Tout marquer lu
+
+# Auth JWT
+POST   /api/recrutement/auth/login                      # Obtenir token
+```
+
+#### Swagger UI
+```
+http://localhost:8083/swagger-ui/index.html
+```
+
+---
+
+## 🔐 Sécurité JWT
+
+### Fichiers
+- `security/JwtUtil.java` — Génération/validation tokens HS256
+- `security/JwtAuthFilter.java` — Filtre HTTP (OncePerRequestFilter)
+- `security/SecurityConfig.java` — Règles d'accès + CORS
+- `controller/AuthController.java` — Endpoint login
+
+### Obtenir un token
+```bash
+POST http://localhost:8083/api/recrutement/auth/login
+Content-Type: application/json
+
+{"username": "admin", "password": "admin123"}
+```
+
+### Comptes
+| Username | Password | Rôle |
+|----------|----------|------|
+| `admin` | `admin123` | ADMIN |
+| `user` | `user123` | USER |
+
+### Utiliser le token
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+```
+
+### Fix CORS Spring Security
+```java
+// OPTIONS preflight toujours autorisé
+.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+// CorsConfigurationSource avec allowedOriginPatterns("*")
+http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+```
+
+---
+
+## 🔗 OpenFeign — Communication Inter-Services
+
+Le recrutement-service communique avec le forum-service via OpenFeign :
+
+```java
+@FeignClient(name = "forum-service", fallback = ForumServiceClientFallback.class)
+public interface ForumServiceClient {
+    @GetMapping("/api/forum/messages/count-by-email")
+    int countMessagesByEmail(@RequestParam("email") String email);
+}
+```
+
+- Eureka résout automatiquement l'URL via `lb://forum-service`
+- Fallback Circuit Breaker si forum-service est indisponible
+- `@EnableFeignClients` dans `RecrutementApplication.java`
+
+---
+
+## 🏆 Innovation — Scoring Automatique des Candidatures
+
+### ScoringService.java
+
+Algorithme multi-critères (0-100 points) :
+
+| Critère | Points | Logique |
+|---------|--------|---------|
+| Expérience | 40 pts | Proportionnel à l'expérience requise |
+| Qualité lettre (NLP) | 35 pts | Vocabulaire, mots-clés, structure |
+| Rapidité candidature | 15 pts | Dans les 2 premiers jours = 15 pts |
+| Complétude dossier | 10 pts | CV, email, nom, prénom |
+
+### Analyse NLP de la lettre de motivation
+
+```
+POST http://localhost:8083/api/recrutement/analyse-lettre
+Body: {"lettre": "Madame, Monsieur..."}
+```
+
+Retourne : qualité (EXCELLENTE/BONNE/CORRECTE/INSUFFISANTE), score, mots-clés pédagogiques trouvés, ratio vocabulaire, conseils d'amélioration.
+
+### Classement par offre
+
+```
+GET http://localhost:8083/api/recrutement/offres/{id}/classement
+```
+
+Retourne les candidats triés par score décroissant avec rang (🥇🥈🥉) et niveau.
+
+---
+
+## ⏰ Scheduler — Notifications Admin
+
+```java
+@Scheduled(cron = "0 30 13 * * *") // Chaque jour à 13:30
+public void verifierCandidaturesEnAttente()
+```
+
+- Vérifie les offres OUVERTE non expirées
+- Crée une `AdminNotification` par offre avec candidatures EN_ATTENTE
+- L'admin voit le badge en temps réel (polling Angular 10s)
+
+---
+
+## 📧 Email — Gmail SMTP
+
+```properties
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
+```
+
+Email HTML envoyé automatiquement quand l'admin accepte une candidature.
+
+---
+
+## 🧪 Tests JUnit / Mockito
+
+```bash
+cd recrutement-service
+mvn test
+```
+
+### CandidatureServiceTest.java (8 tests)
+| Test | Scénario |
+|------|----------|
+| `postuler_Success` | Candidature créée avec succès |
+| `postuler_OffreNotFound` | Offre inexistante → `Optional.empty()` |
+| `postuler_DoublonDetecte` | Email déjà utilisé → `RuntimeException` |
+| `changerStatut_Acceptee` | Email envoyé automatiquement |
+| `changerStatut_Refusee` | Offre reste OUVERTE |
+| `estCandidatDoublon_True` | Doublon dans 30 jours |
+| `getCandidaturesByOffre` | Liste retournée |
+| `estCandidatDoublon_False` | Pas de doublon |
+
+### OffreServiceTest.java (9 tests)
+| Test | Scénario |
+|------|----------|
+| `addOffre` | Date publication auto + statut OUVERTE |
+| `getAllOffres` | Liste complète |
+| `getOffreById_Found` | Offre trouvée |
+| `getOffreById_NotFound` | Optional.empty() |
+| `fermerOffre` | Statut → FERMEE |
+| `rouvrirOffre` | Statut → OUVERTE |
+| `deleteOffre_Success` | Suppression OK |
+| `deleteOffre_NotFound` | Retourne false |
+| `getOffresByStatut` | Filtrage correct |
+
+---
+
+## 🗄️ Configuration Base de Données
+
+```properties
+# forum-service
+spring.datasource.url=jdbc:mysql://localhost:3306/forum_db
+
+# recrutement-service
+spring.datasource.url=jdbc:mysql://localhost:3306/recrutement_db?maxAllowedPacket=67108864
+spring.jpa.hibernate.ddl-auto=update
+```
+
+**MySQL max_allowed_packet** configuré à 64MB pour les CVs en LONGBLOB :
+```sql
+SET GLOBAL max_allowed_packet=67108864;
+```
+
+---
+
+## 📋 Logique Métier Avancée
+
+| Fonctionnalité | Endpoint | Description |
+|----------------|----------|-------------|
+| Empêcher doublon | `POST /candidatures/offre/{id}` | 409 si même email + même offre |
+| Détection doublon spécialité | `GET /candidatures/doublon` | Même spécialité dans 30 jours |
+| Réaffectation après refus | `GET /candidatures/{id}/offre-compatible` | Offre compatible automatique |
+| Scoring candidature | `GET /candidatures/{id}/scoring` | Score 0-100 détaillé |
+| Classement par offre | `GET /offres/{id}/classement` | Tri par score avec rang |
+| Analyse NLP lettre | `POST /analyse-lettre` | Qualité + mots-clés + conseils |
+| Clôture automatique | Scheduler | Offres expirées → FERMEE |
+| Notification admin | Scheduler 13:30 | EN_ATTENTE → notification in-app |
+| Email acceptation | `PATCH /candidatures/{id}/statut` | Email HTML automatique |
+
+---
+
+## 🎓 Contexte Académique
+
+| Champ | Valeur |
+|-------|--------|
+| Institution | Esprit School of Engineering |
+| Projet | PIDEV (Projet Intégré de Développement) |
+| Classe | 3ème Année |
+| Année | 2025–2026 |
+| Localisation | Tunis, Tunisie |
+
+---
+
+*© 2025-2026 Esprit School of Engineering — Tunisie*

@@ -1,12 +1,12 @@
 package tn.esprit.recrutement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tn.esprit.recrutement.validation.*;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.time.LocalDate;
+import java.util.Base64;
 
 @Entity
 @Getter
@@ -15,49 +15,54 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString(exclude = "offre")
 public class CandidatureEnseignant {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id_candidature")
     private Long id;
-    
-    @NotBlank(message = "Le nom du candidat est obligatoire")
-    @ValidName(message = "Le nom doit contenir uniquement des lettres, commencer par une majuscule, et avoir entre 2 et 50 caractères")
+
     private String nom_candidat;
-    
-    @NotBlank(message = "Le prénom du candidat est obligatoire")
-    @ValidName(message = "Le prénom doit contenir uniquement des lettres, commencer par une majuscule, et avoir entre 2 et 50 caractères")
+
     private String prenom_candidat;
-    
-    @NotBlank(message = "L'email est obligatoire")
-    @ValidEmail(message = "Email invalide. Format attendu : exemple@domaine.com (5-100 caractères, domaine valide)")
-    @Column(unique = true)
+
+    @Column
     private String email;
-    
+
     @Lob
     @Column(name = "cv_pdf", columnDefinition = "LONGBLOB")
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
     private byte[] cv_pdf;
-    
+
+    @JsonSetter("cv_pdf")
+    public void setCvPdfFromBase64(Object value) {
+        if (value == null) {
+            this.cv_pdf = null;
+        } else if (value instanceof String) {
+            try {
+                this.cv_pdf = Base64.getDecoder().decode((String) value);
+            } catch (IllegalArgumentException e) {
+                this.cv_pdf = null;
+            }
+        }
+    }
+
     @Column(name = "cv_filename")
     private String cv_filename;
-    
+
     @Column(name = "cv_content_type")
     private String cv_content_type;
-    
-    @Column(name = "cv_url")
-    private String cv_url = "";
-    
-    @NotBlank(message = "La lettre de motivation est obligatoire")
-    @ValidLettreMotivation(message = "Lettre de motivation invalide. Doit contenir 100-2000 caractères, au moins 20 mots, et des phrases complètes")
+
     @Column(length = 2000)
     private String lettre_motivation;
-    
+
     private LocalDate date_candidature;
-    
-    @NotBlank(message = "Le statut est obligatoire")
-    @Pattern(regexp = "EN_ATTENTE|ACCEPTEE|REFUSEE", message = "Le statut doit être EN_ATTENTE, ACCEPTEE ou REFUSEE")
-    private String statut; // EN_ATTENTE, ACCEPTEE, REFUSEE
-    
+
+    private String statut;
+
+    @Column(name = "annees_experience")
+    private Integer annees_experience = 0;
+
     @ManyToOne
     @JoinColumn(name = "offre_id")
     @JsonIgnore

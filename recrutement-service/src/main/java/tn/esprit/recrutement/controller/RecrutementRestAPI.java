@@ -2,12 +2,15 @@ package tn.esprit.recrutement.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.recrutement.entity.CandidatureEnseignant;
 import tn.esprit.recrutement.entity.OffreRecrutement;
+import tn.esprit.recrutement.repository.CandidatureRepository;
 import tn.esprit.recrutement.service.CandidatureService;
 import tn.esprit.recrutement.service.OffreService;
 
@@ -22,6 +25,8 @@ public class RecrutementRestAPI {
     
     private final OffreService offreService;
     private final CandidatureService candidatureService;
+    private final CandidatureRepository candidatureRepository;
+    private final tn.esprit.recrutement.service.ScoringService scoringService;
     
     // ========== CRUD OFFRES ==========
     
@@ -95,7 +100,7 @@ public class RecrutementRestAPI {
     @PostMapping("/candidatures/offre/{offreId}")
     public ResponseEntity<Object> postuler(
             @PathVariable Long offreId,
-            @Valid @RequestBody CandidatureEnseignant candidature,
+            @RequestBody CandidatureEnseignant candidature,
             BindingResult bindingResult) {
 
         System.out.println("📥 Requête POST reçue pour offre ID: " + offreId);
@@ -166,5 +171,91 @@ public class RecrutementRestAPI {
     public ResponseEntity<String> convertirEnEnseignant(@PathVariable Long id) {
         String result = candidatureService.convertirEnEnseignantSiAcceptee(id);
         return ResponseEntity.ok(result);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MÉTIER AVANCÉ 1 : Vérifier si doublon de candidature
+    // GET /api/recrutement/candidatures/doublon?email=x&specialite=y
+    // ═══════════════════════════════════════════════════════
+    @GetMapping("/candidatures/doublon")
+    public ResponseEntity<Map<String, Object>> verifierDoublon(
+            @RequestParam String email,
+            @RequestParam String specialite) {
+        boolean estDoublon = candidatureService.estCandidatDoublon(email, specialite);
+        Map<String, Object> result = new HashMap<>();
+        result.put("estDoublon", estDoublon);
+        result.put("email", email);
+        result.put("specialite", specialite);
+        result.put("message", estDoublon
+                ? "Ce candidat a déjà postulé à une offre de spécialité '" + specialite + "' dans les 30 derniers jours."
+                : "Aucun doublon détecté. Le candidat peut postuler.");
+        return ResponseEntity.ok(result);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MÉTIER AVANCÉ 2 : Trouver offre compatible après refus
+    // GET /api/recrutement/candidatures/{id}/offre-compatible
+    // ═══════════════════════════════════════════════════════
+    @GetMapping("/candidatures/{id}/offre-compatible")
+    public ResponseEntity<Object> trouverOffreCompatible(@PathVariable Long id) {
+        return candidatureService.trouverOffreCompatible(id)
+                .<ResponseEntity<Object>>map(offre -> {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("offreCompatible", offre);
+                    result.put("message", "Une offre compatible a été trouvée pour ce candidat.");
+                    return ResponseEntity.ok(result);
+                })
+                .orElseGet(() -> {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("offreCompatible", null);
+                    result.put("message", "Aucune offre compatible trouvée pour ce candidat.");
+                    return ResponseEntity.ok(result);
+                });
+    }
+
+    @GetMapping("/candidatures/{id}/cv")
+    public ResponseEntity<byte[]> downloadCV(@PathVariable Long id) {
+        return candidatureRepository.findById(id)
+            .filter(c -> c.getCv_pdf() != null && c.getCv_pdf().length > 0)
+            .map(c -> {
+                String contentType = c.getCv_content_type() != null ? c.getCv_content_type() : "application/pdf";
+                String filename = c.getCv_filename() != null ? c.getCv_filename() : "CV.pdf";
+                return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(c.getCv_pdf());
+            })
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🏆 INNOVATION 1 : Classement des candidats par score
+    // GET /api/recrutement/offres/{id}/classement
+    // ═══════════════════════════════════════════════════════════════
+    @GetMapping("/offres/{id}/classement")
+    public ResponseEntity<List<tn.esprit.recrutement.dto.CandidatureRankDTO>> getClassement(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(candidatureService.getClassementParOffre(id));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🏆 INNOVATION 2 : Score détaillé d'une candidature
+    // GET /api/recrutement/candidatures/{id}/scoring
+    // ═══════════════════════════════════════════════════════════════
+    @GetMapping("/candidatures/{id}/scoring")
+    public ResponseEntity<Map<String, Object>> getScoringDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(candidatureService.getScoringDetail(id));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // 🏆 INNOVATION 3 : Analyse NLP de la lettre de motivation
+    // POST /api/recrutement/analyse-lettre
+    // Body: {"lettre": "..."}
+    // ═══════════════════════════════════════════════════════════════
+    @PostMapping("/analyse-lettre")
+    public ResponseEntity<Map<String, Object>> analyserLettre(
+            @RequestBody Map<String, String> body) {
+        String lettre = body.getOrDefault("lettre", "");
+        return ResponseEntity.ok(scoringService.analyserLettre(lettre));
     }
 }

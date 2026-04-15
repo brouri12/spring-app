@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tn.esprit.recrutement.entity.CandidatureEnseignant;
 import tn.esprit.recrutement.entity.OffreRecrutement;
 import tn.esprit.recrutement.repository.CandidatureRepository;
@@ -12,8 +14,13 @@ import tn.esprit.recrutement.repository.OffreRepository;
 
 import java.time.LocalDate;
 
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableAsync
+@EnableScheduling
+@EnableFeignClients
 public class RecrutementApplication {
 
     public static void main(String[] args) {
